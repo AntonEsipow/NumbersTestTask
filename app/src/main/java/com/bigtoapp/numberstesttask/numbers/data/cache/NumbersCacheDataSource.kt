@@ -1,4 +1,6 @@
-package com.bigtoapp.numberstesttask.numbers.data
+package com.bigtoapp.numberstesttask.numbers.data.cache
+
+import com.bigtoapp.numberstesttask.numbers.data.NumberData
 
 interface NumbersCacheDataSource: FetchNumber{
 
