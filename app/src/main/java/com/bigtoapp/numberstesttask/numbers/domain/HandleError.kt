@@ -3,11 +3,11 @@ package com.bigtoapp.numberstesttask.numbers.domain
 import com.bigtoapp.numberstesttask.R
 import com.bigtoapp.numberstesttask.numbers.presentation.ManageResources
 
-interface HandleError {
+interface HandleError<T> {
 
-    fun handle(e: Exception): String
+    fun handle(e: Exception): T
 
-    class Base(private val manageResources: ManageResources): HandleError {
+    class Base(private val manageResources: ManageResources): HandleError<String> {
 
         override fun handle(e: Exception): String = manageResources.string(
             when (e) {
