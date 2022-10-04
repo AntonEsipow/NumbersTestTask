@@ -1,6 +1,6 @@
 package com.bigtoapp.numberstesttask.numbers.data.cloud
 
-import com.bigtoapp.numberstesttask.numbers.data.FetchNumber
+import com.bigtoapp.numberstesttask.numbers.data.cache.FetchNumber
 import com.bigtoapp.numberstesttask.numbers.data.NumberData
 
 interface NumbersCloudDataSource: FetchNumber {
