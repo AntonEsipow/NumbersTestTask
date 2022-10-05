@@ -8,7 +8,7 @@ sealed class UiState {
 
     }
 
-    data class Error(private val message: String): UiState() {
+    data class ShowError(private val message: String): UiState() {
 
     }
 }
