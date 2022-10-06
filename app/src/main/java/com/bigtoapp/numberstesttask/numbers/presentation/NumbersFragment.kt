@@ -95,7 +95,7 @@ class NumbersFragment: Fragment() {
 
     override fun onPause() {
         super.onPause()
-        inputEditText.addTextChangedListener(watcher)
+        inputEditText.removeTextChangedListener(watcher)
     }
 
     override fun onDetach() {
