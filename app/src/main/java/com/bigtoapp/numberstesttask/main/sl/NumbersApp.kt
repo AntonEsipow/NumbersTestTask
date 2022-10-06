@@ -13,8 +13,12 @@ class NumbersApp: Application(), ProvideViewModel {
 
     override fun onCreate() {
         super.onCreate()
+        val provideInstances = if(BuildConfig.DEBUG)
+            ProvideInstances.Mock(this)
+        else
+            ProvideInstances.Realise(this)
         viewModelsFactory = ViewModelsFactory(
-            DependencyContainer.Base(Core.Base(this, !BuildConfig.DEBUG))
+            DependencyContainer.Base(Core.Base(this, provideInstances))
         )
     }
 
