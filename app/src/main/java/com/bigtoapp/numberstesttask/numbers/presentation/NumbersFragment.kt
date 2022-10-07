@@ -12,41 +12,19 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bigtoapp.numberstesttask.R
-import com.bigtoapp.numberstesttask.details.presentation.DetailsFragment
-import com.bigtoapp.numberstesttask.main.presentation.ShowFragment
-import com.bigtoapp.numberstesttask.main.sl.ProvideViewModel
+import com.bigtoapp.numberstesttask.details.presentation.NumberDetailsFragment
+import com.bigtoapp.numberstesttask.main.presentation.BaseFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class NumbersFragment: Fragment() {
+class NumbersFragment: BaseFragment<NumbersViewModel.Base>() {
 
-    private var showFragment: ShowFragment = ShowFragment.Empty()
-
-    private lateinit var viewModel: NumbersViewModel
+    override val viewModelClass = NumbersViewModel.Base::class.java
+    override val layoutId = R.layout.fragment_numbers
     private lateinit var inputEditText: TextInputEditText
 
     private val watcher = object : SimpleTextWatcher() {
         override fun afterTextChanged(s: Editable?) = viewModel.clearError()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        showFragment = context as ShowFragment
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = (requireActivity() as ProvideViewModel).provideViewModel(
-            NumbersViewModel::class.java, this
-        )
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_numbers, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,11 +35,8 @@ class NumbersFragment: Fragment() {
         val inputLayout = view.findViewById<TextInputLayout>(R.id.textInputLayout)
         inputEditText = view.findViewById(R.id.inputEditText)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        val mapper = DetailsUi()
         val adapter = NumbersAdapter(object : ClickListener {
-            override fun click(item: NumberUi) =
-                showFragment.show(DetailsFragment.newInstance(item.map(mapper)))
-
+            override fun click(item: NumberUi) = viewModel.showDetails(item)
         })
         recyclerView.adapter = adapter
 
@@ -96,11 +71,6 @@ class NumbersFragment: Fragment() {
     override fun onPause() {
         super.onPause()
         inputEditText.removeTextChangedListener(watcher)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        showFragment = ShowFragment.Empty()
     }
 }
 

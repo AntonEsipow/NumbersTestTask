@@ -1,5 +1,6 @@
 package com.bigtoapp.numberstesttask.numbers.domain
 
+import com.bigtoapp.numberstesttask.details.data.NumberFactDetails
 import com.bigtoapp.numberstesttask.numbers.presentation.ManageResources
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
@@ -18,7 +19,8 @@ class NumbersInteractorTest {
         repository = TestNumbersRepository()
         interactor = NumbersInteractor.Base(
             repository,
-            HandleRequest.Base(HandleError.Base(manageResources), repository)
+            HandleRequest.Base(HandleError.Base(manageResources), repository),
+            NumberFactDetails.Base()
         )
     }
 

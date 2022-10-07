@@ -1,13 +1,16 @@
 package com.bigtoapp.numberstesttask.main.sl
 
 import android.content.Context
+import com.bigtoapp.numberstesttask.details.data.NumberFactDetails
+import com.bigtoapp.numberstesttask.main.presentation.NavigationCommunication
 import com.bigtoapp.numberstesttask.numbers.data.cache.CacheModule
 import com.bigtoapp.numberstesttask.numbers.data.cache.NumbersRoomDatabase
 import com.bigtoapp.numberstesttask.numbers.data.cloud.CloudModule
 import com.bigtoapp.numberstesttask.numbers.presentation.DispatchersList
 import com.bigtoapp.numberstesttask.numbers.presentation.ManageResources
 
-interface Core : CloudModule, CacheModule, ManageResources {
+interface Core : CloudModule, CacheModule, ManageResources, ProvideNavigation,
+    ProvideNumberDetails {
 
     fun provideDispatchers(): DispatchersList
 
@@ -15,6 +18,10 @@ interface Core : CloudModule, CacheModule, ManageResources {
         context: Context,
         private val provideInstances: ProvideInstances
     ) : Core {
+
+        private val numberDetails = NumberFactDetails.Base()
+
+        private val navigationCommunication = NavigationCommunication.Base()
 
         private val manageResources: ManageResources = ManageResources.Base(context)
 
@@ -35,7 +42,20 @@ interface Core : CloudModule, CacheModule, ManageResources {
 
         override fun string(id: Int) = manageResources.string(id)
 
+        override fun provideNavigation() = navigationCommunication
+
+        override fun provideNumberDetails(): NumberFactDetails.Mutable = numberDetails
+
         override fun provideDispatchers() = dispatchersList
 
     }
+}
+
+
+interface ProvideNavigation {
+    fun provideNavigation(): NavigationCommunication.Mutable
+}
+
+interface ProvideNumberDetails {
+    fun provideNumberDetails(): NumberFactDetails.Mutable
 }

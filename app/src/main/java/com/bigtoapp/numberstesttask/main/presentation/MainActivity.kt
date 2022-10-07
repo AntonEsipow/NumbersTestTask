@@ -9,31 +9,18 @@ import com.bigtoapp.numberstesttask.R
 import com.bigtoapp.numberstesttask.main.sl.ProvideViewModel
 import com.bigtoapp.numberstesttask.numbers.presentation.NumbersFragment
 
-class MainActivity : AppCompatActivity(), ShowFragment, ProvideViewModel {
+class MainActivity : AppCompatActivity(), ProvideViewModel {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        if (savedInstanceState == null) {
-            NavigationStrategy.Replace(NumbersFragment())
-                .navigate(supportFragmentManager, R.id.container)
+        val viewModel = provideViewModel(MainViewModel::class.java, this)
+        viewModel.observe(this) { strategy ->
+            strategy.navigate(supportFragmentManager, R.id.container)
         }
-    }
-
-    override fun show(fragment: Fragment) {
-        NavigationStrategy.Add(fragment).navigate(supportFragmentManager, R.id.container)
+        viewModel.init(savedInstanceState == null)
     }
 
     override fun <T : ViewModel> provideViewModel(clazz: Class<T>, owner: ViewModelStoreOwner): T =
         (application as ProvideViewModel).provideViewModel(clazz, owner)
-}
-
-interface ShowFragment {
-
-    fun show(fragment: Fragment)
-
-    class Empty : ShowFragment {
-        override fun show(fragment: Fragment) = Unit
-    }
 }

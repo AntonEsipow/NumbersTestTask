@@ -1,6 +1,7 @@
 package com.bigtoapp.numberstesttask.numbers.presentation
 
 import android.view.View
+import com.bigtoapp.numberstesttask.main.presentation.NavigationStrategy
 import com.bigtoapp.numberstesttask.numbers.domain.NumberFact
 import com.bigtoapp.numberstesttask.numbers.domain.NumberUiMapper
 import com.bigtoapp.numberstesttask.numbers.domain.NumbersInteractor
@@ -16,6 +17,7 @@ import org.junit.Test
 
 class NumbersViewModelTest : BaseTest() {
 
+    private lateinit var navigation: TestNavigationCommunication
     private lateinit var viewModel: NumbersViewModel
     private lateinit var communications: TestNumbersCommunications
     private lateinit var interactor: TestNumbersInteractor
@@ -23,11 +25,13 @@ class NumbersViewModelTest : BaseTest() {
 
     @Before
     fun init() {
+        navigation = TestNavigationCommunication()
         communications = TestNumbersCommunications()
         interactor = TestNumbersInteractor()
         manageResources = TestManageResources()
+        val detailsMapper = TestUiMapper()
         viewModel =
-            NumbersViewModel(
+            NumbersViewModel.Base(
                 HandleNumbersRequest.Base(
                     TestDispatchersList(),
                     communications,
@@ -35,7 +39,9 @@ class NumbersViewModelTest : BaseTest() {
                 ),
                 manageResources,
                 communications,
-                interactor
+                interactor,
+                navigation,
+                detailsMapper
             )
     }
 
@@ -137,8 +143,16 @@ class NumbersViewModelTest : BaseTest() {
         assertEquals(true, communications.stateCalledList[0] is UiState.ClearError)
     }
 
-    private class TestManageResources : ManageResources {
+    @Test
+    fun `test navigation details`() {
+        viewModel.showDetails(NumberUi("0", "fact"))
 
+        assertEquals("0 fact", interactor.details)
+        assertEquals(1, navigation.count)
+        assertEquals(true, navigation.strategy is NavigationStrategy.Add)
+    }
+
+    private class TestManageResources : ManageResources {
         private var string: String = ""
 
         fun makeExpectedAnswer(expected: String) {
@@ -148,7 +162,10 @@ class NumbersViewModelTest : BaseTest() {
         override fun string(id: Int): String = string
     }
 
+
     private class TestNumbersInteractor : NumbersInteractor {
+
+        var details: String = ""
 
         private var result: NumbersResult = NumbersResult.Success()
 
@@ -158,6 +175,10 @@ class NumbersViewModelTest : BaseTest() {
 
         fun changeExpectedResult(newResult: NumbersResult) {
             result = newResult
+        }
+
+        override fun saveDetails(details: String) {
+            this.details = details
         }
 
         override suspend fun init(): NumbersResult {
@@ -182,5 +203,9 @@ class NumbersViewModelTest : BaseTest() {
 
         override fun io(): CoroutineDispatcher = dispatcher
         override fun ui(): CoroutineDispatcher = dispatcher
+    }
+
+    private class TestUiMapper : NumberUi.Mapper<String> {
+        override fun map(id: String, fact: String): String = "$id $fact"
     }
 }
