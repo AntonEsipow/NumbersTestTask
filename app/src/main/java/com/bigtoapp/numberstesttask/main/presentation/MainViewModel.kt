@@ -12,7 +12,7 @@ class MainViewModel(
 
     override fun init(isFirstRun: Boolean) {
         if(isFirstRun)
-            navigationCommunication.map(NavigationStrategy.Replace(NumbersFragment()))
+            navigationCommunication.map(NavigationStrategy.Replace(Screen.Numbers))
     }
 
     override fun observe(owner: LifecycleOwner, observer: Observer<NavigationStrategy>) =

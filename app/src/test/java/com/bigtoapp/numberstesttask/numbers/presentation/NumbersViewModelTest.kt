@@ -2,6 +2,7 @@ package com.bigtoapp.numberstesttask.numbers.presentation
 
 import android.view.View
 import com.bigtoapp.numberstesttask.main.presentation.NavigationStrategy
+import com.bigtoapp.numberstesttask.main.presentation.Screen
 import com.bigtoapp.numberstesttask.numbers.domain.NumberFact
 import com.bigtoapp.numberstesttask.numbers.domain.NumberUiMapper
 import com.bigtoapp.numberstesttask.numbers.domain.NumbersInteractor
@@ -149,7 +150,7 @@ class NumbersViewModelTest : BaseTest() {
 
         assertEquals("0 fact", interactor.details)
         assertEquals(1, navigation.count)
-        assertEquals(true, navigation.strategy is NavigationStrategy.Add)
+        assertEquals(NavigationStrategy.Add(Screen.Details), navigation.strategy)
     }
 
     private class TestManageResources : ManageResources {

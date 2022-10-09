@@ -9,6 +9,7 @@ import com.bigtoapp.numberstesttask.details.presentation.NumberDetailsFragment
 import com.bigtoapp.numberstesttask.main.presentation.Init
 import com.bigtoapp.numberstesttask.main.presentation.NavigationCommunication
 import com.bigtoapp.numberstesttask.main.presentation.NavigationStrategy
+import com.bigtoapp.numberstesttask.main.presentation.Screen
 import com.bigtoapp.numberstesttask.numbers.domain.NumbersInteractor
 
 interface NumbersViewModel : Init, FetchNumbers, ObserveNumbers, ClearError {
@@ -25,7 +26,7 @@ interface NumbersViewModel : Init, FetchNumbers, ObserveNumbers, ClearError {
 
         override fun showDetails(item: NumberUi) {
             interactor.saveDetails(item.map(detailsMapper))
-            navigationCommunication.map(NavigationStrategy.Add(NumberDetailsFragment()))
+            navigationCommunication.map(NavigationStrategy.Add(Screen.Details))
         }
 
         override fun init(isFirstRun: Boolean) {
