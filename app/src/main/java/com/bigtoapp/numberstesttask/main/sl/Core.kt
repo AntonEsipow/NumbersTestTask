@@ -6,11 +6,12 @@ import com.bigtoapp.numberstesttask.main.presentation.NavigationCommunication
 import com.bigtoapp.numberstesttask.numbers.data.cache.CacheModule
 import com.bigtoapp.numberstesttask.numbers.data.cache.NumbersRoomDatabase
 import com.bigtoapp.numberstesttask.numbers.data.cloud.CloudModule
+import com.bigtoapp.numberstesttask.numbers.data.cloud.RandomApiHeader
 import com.bigtoapp.numberstesttask.numbers.presentation.DispatchersList
 import com.bigtoapp.numberstesttask.numbers.presentation.ManageResources
 
 interface Core : CloudModule, CacheModule, ManageResources, ProvideNavigation,
-    ProvideNumberDetails {
+    ProvideNumberDetails, ProvideRandomApiHeader {
 
     fun provideDispatchers(): DispatchersList
 
@@ -45,6 +46,8 @@ interface Core : CloudModule, CacheModule, ManageResources, ProvideNavigation,
         override fun provideNavigation() = navigationCommunication
 
         override fun provideNumberDetails(): NumberFactDetails.Mutable = numberDetails
+
+        override fun provideRandomApiHeader(): RandomApiHeader.Combo = provideInstances.provideRandomApiHeader()
 
         override fun provideDispatchers() = dispatchersList
 
