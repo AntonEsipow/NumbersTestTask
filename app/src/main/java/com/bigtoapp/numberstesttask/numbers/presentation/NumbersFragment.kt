@@ -29,7 +29,7 @@ class NumbersFragment: BaseFragment<NumbersViewModel.Base>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+        val progressBar = view.findViewById<View>(R.id.progressBar)
         val factButton = view.findViewById<Button>(R.id.getFactButton)
         val randomButton = view.findViewById<Button>(R.id.randomFactButton)
         val inputLayout = view.findViewById<BaseCustomTextInputLayout>(R.id.textInputLayout)
