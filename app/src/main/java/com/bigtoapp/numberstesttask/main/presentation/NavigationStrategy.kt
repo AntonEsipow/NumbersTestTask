@@ -31,5 +31,4 @@ interface NavigationStrategy {
                 add(containerId, it.newInstance()).addToBackStack(it.simpleName)
             }
     }
-
 }

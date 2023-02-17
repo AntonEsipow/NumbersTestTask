@@ -9,9 +9,10 @@ import com.bigtoapp.numberstesttask.numbers.data.cloud.CloudModule
 import com.bigtoapp.numberstesttask.numbers.data.cloud.RandomApiHeader
 import com.bigtoapp.numberstesttask.numbers.presentation.DispatchersList
 import com.bigtoapp.numberstesttask.numbers.presentation.ManageResources
+import com.bigtoapp.numberstesttask.random.WorkManagerWrapper
 
 interface Core : CloudModule, CacheModule, ManageResources, ProvideNavigation,
-    ProvideNumberDetails, ProvideRandomApiHeader {
+    ProvideNumberDetails, ProvideRandomApiHeader, ProvideWorkManagerWrapper {
 
     fun provideDispatchers(): DispatchersList
 
@@ -19,6 +20,8 @@ interface Core : CloudModule, CacheModule, ManageResources, ProvideNavigation,
         context: Context,
         private val provideInstances: ProvideInstances
     ) : Core {
+
+        private val workManagerWrapper = WorkManagerWrapper.Base(context)
 
         private val numberDetails = NumberFactDetails.Base()
 
@@ -51,9 +54,13 @@ interface Core : CloudModule, CacheModule, ManageResources, ProvideNavigation,
 
         override fun provideDispatchers() = dispatchersList
 
+        override fun provideWorkManagerWrapper(): WorkManagerWrapper = workManagerWrapper
     }
 }
 
+interface ProvideWorkManagerWrapper{
+    fun provideWorkManagerWrapper(): WorkManagerWrapper
+}
 
 interface ProvideNavigation {
     fun provideNavigation(): NavigationCommunication.Mutable
