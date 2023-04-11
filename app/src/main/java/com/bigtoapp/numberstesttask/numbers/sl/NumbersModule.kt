@@ -12,12 +12,11 @@ import com.bigtoapp.numberstesttask.numbers.data.cloud.NumbersCloudDataSource
 import com.bigtoapp.numberstesttask.numbers.data.cloud.NumbersService
 import com.bigtoapp.numberstesttask.numbers.domain.*
 import com.bigtoapp.numberstesttask.numbers.presentation.*
-import com.bigtoapp.numberstesttask.random.ProvidePeriodicRepository
 
 class NumbersModule(
     private val core: Core,
     private val provideRepository: ProvideNumbersRepository
-    ) : Module<NumbersViewModel.Base> {
+) : Module<NumbersViewModel.Base> {
 
     override fun viewModel(): NumbersViewModel.Base {
         val repository = provideRepository.provideNumbersRepository()
@@ -26,24 +25,22 @@ class NumbersModule(
             NumbersStateCommunication.Base(),
             NumbersListCommunication.Base()
         )
+        val mapper = NumbersResultMapper(communications, NumberUiMapper())
+        val interactor = NumbersInteractor.Base(
+            repository,
+            HandleRequest.Base(
+                HandleError.Base(core),
+                repository
+            ),
+            core.provideNumberDetails()
+        )
         return NumbersViewModel.Base(
-            HandleNumbersRequest.Base(
-                core.provideDispatchers(),
-                communications,
-                NumbersResultMapper(communications, NumberUiMapper())
-            ),
-            core,
-            communications,
-            NumbersInteractor.Base(
-                repository,
-                HandleRequest.Base(
-                    HandleError.Base(core),
-                    repository
-                ),
-                core.provideNumberDetails()
-            ),
-            core.provideNavigation(),
-            DetailsUi()
+            core.provideDispatchers(),
+            NumbersInitialFeature(communications, mapper, interactor),
+            NumbersFactFeature.Base(core, communications, mapper, interactor),
+            RandomNumberFactFeature(interactor, communications, mapper),
+            ShowDetails.Base(interactor, core.provideNavigation(), DetailsUi()),
+            communications
         )
     }
 }
