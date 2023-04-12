@@ -4,9 +4,9 @@ import android.widget.TextView
 
 data class NumberUi(private val id: String, private val fact: String) : Mapper<Boolean, NumberUi> {
 
-    fun <T> map(mapper: Mapper<T>): T = mapper.map(id, fact)
+    fun <T: Any> map(mapper: Mapper<T>): T = mapper.map(id, fact)
 
-    interface Mapper<T> {
+    interface Mapper<T: Any> {
         fun map(id: String, fact: String): T
     }
     override fun map(source: NumberUi) = source.id == id

@@ -3,7 +3,7 @@ package com.bigtoapp.numberstesttask.numbers.domain
 import com.bigtoapp.numberstesttask.R
 import com.bigtoapp.numberstesttask.numbers.presentation.ManageResources
 
-interface HandleError<T> {
+interface HandleError<T: Any> {
 
     fun handle(e: Exception): T
 

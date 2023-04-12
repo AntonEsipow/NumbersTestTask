@@ -7,15 +7,15 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 interface CloudModule {
 
-    fun <T> service(clasz: Class<T>): T
+    fun <T: Any> service(clasz: Class<T>): T
 
     class Mock(private val randomApiHeader: RandomApiHeader.MockResponse) : CloudModule {
-        override fun <T> service(clasz: Class<T>): T = MockNumbersService(randomApiHeader) as T
+        override fun <T: Any> service(clasz: Class<T>): T = MockNumbersService(randomApiHeader) as T
     }
 
     class Base : CloudModule {
 
-        override fun <T> service(clasz: Class<T>): T {
+        override fun <T: Any> service(clasz: Class<T>): T {
             val interceptor = HttpLoggingInterceptor().apply {
                 setLevel(HttpLoggingInterceptor.Level.BODY)
             }

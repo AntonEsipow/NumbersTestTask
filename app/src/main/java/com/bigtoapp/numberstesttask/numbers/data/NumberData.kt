@@ -5,7 +5,7 @@ data class NumberData(
     private val fact: String
 ) {
 
-    interface Mapper<T> {
+    interface Mapper<T: Any> {
         fun map(id: String, fact: String): T
 
         class Matches(private val id: String): Mapper<Boolean> {
@@ -13,5 +13,5 @@ data class NumberData(
         }
     }
 
-    fun <T> map(mapper: Mapper<T>): T = mapper.map(id, fact)
+    fun <T: Any> map(mapper: Mapper<T>): T = mapper.map(id, fact)
 }

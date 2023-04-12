@@ -40,7 +40,7 @@ interface Core : CloudModule, CacheModule, ManageResources, ProvideNavigation,
             provideInstances.provideCacheModule()
         }
 
-        override fun <T> service(clasz: Class<T>): T = cloudModule.service(clasz)
+        override fun <T: Any> service(clasz: Class<T>): T = cloudModule.service(clasz)
 
         override fun provideDatabase() = cacheModule.provideDatabase()
 
