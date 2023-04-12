@@ -38,9 +38,5 @@ abstract class BaseTest {
             timesShowList++
             numbersList.addAll(list)
         }
-
-        override fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) = Unit
-        override fun observeState(owner: LifecycleOwner, observer: Observer<UiState>) = Unit
-        override fun observeList(owner: LifecycleOwner, observer: Observer<List<NumberUi>>) = Unit
     }
 }

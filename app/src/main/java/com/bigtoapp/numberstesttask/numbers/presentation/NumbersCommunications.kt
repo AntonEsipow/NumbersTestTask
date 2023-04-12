@@ -36,11 +36,11 @@ interface NumbersCommunications : ObserveNumbers {
 
 interface ObserveNumbers {
 
-    fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>)
+    fun observeProgress(owner: LifecycleOwner, observer: Observer<Int>) = Unit
 
-    fun observeState(owner: LifecycleOwner, observer: Observer<UiState>)
+    fun observeState(owner: LifecycleOwner, observer: Observer<UiState>) = Unit
 
-    fun observeList(owner: LifecycleOwner, observer: Observer<List<NumberUi>>)
+    fun observeList(owner: LifecycleOwner, observer: Observer<List<NumberUi>>) = Unit
 }
 
 interface ProgressCommunication : Communication.Mutable<Int> {
